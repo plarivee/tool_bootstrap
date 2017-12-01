@@ -9,6 +9,6 @@
    update_cache: yes
 
 - name: register certbot
-  command: certbot register --agree-tos -m {{ email|quote }} --no-eff-email --update-registration
+  command: certbot register --agree-tos -m {{ email|quote }} --no-eff-email
   args:
     creates: /etc/letsencrypt/accounts/acme-v01.api.letsencrypt.org/directory/*/regr.json

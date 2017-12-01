@@ -1,0 +1,25 @@
+#!/usr/bin/ansible-playbook
+---
+
+- name: "Bootstrap some tooling server"
+  hosts: "localhost"
+  connection: "local"
+  gather_facts: false
+
+  vars_prompt:
+    - name: "new_hosts"
+      prompt: "provide space separated list of hostnames"
+
+  tasks:
+    - name: "add hosts to inventory"
+      add_host:
+        name: "{{ item }}"
+        group: "dynamic_host_group"
+      with_items: "{{ new_hosts.split(' ') }}"
+
+- name: "template for real task"
+  hosts: "dynamic_host_group"
+  gather_facts: false
+  remote_user: "root"
+  roles:
+    - { role: certbot }

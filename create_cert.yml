@@ -1,0 +1,29 @@
+#!/usr/bin/ansible-playbook
+---
+  
+- name: "Create cert"
+  hosts: "localhost"
+  connection: "local"
+  gather_facts: false
+
+  tasks:
+  - name: Get DNS challenge
+    command: timeout 8s certbot certonly -d {{ domain }} --manual --preferred-challenges dns --manual-public-ip-logging-ok
+    register: challenge
+    ignore_errors: True
+
+  - debug: var=challenge.stdout_lines
+  
+  - name: Wait for User to confirm challenge DNS has been set
+    pause:
+      prompt: "Go set the DNS TXT record....."
+
+  - name: Validate DNS challenge
+    expect:
+      command: certbot certonly -d {{ domain }} --manual --preferred-challenges dns --manual-public-ip-logging-ok
+      responses:
+        'Press Enter to Continue': ''
+    register: response
+  
+  - name: Certbot response
+    debug: var=response.stdout_lines

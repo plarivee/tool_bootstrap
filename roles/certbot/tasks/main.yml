@@ -10,7 +10,7 @@
 
 - name: Install certbot-dns-rfc2136 plugins
   pip:
-		name: certbot-dns-rfc2136
+    name: certbot-dns-rfc2136
 
 - name: register certbot
   command: certbot register --agree-tos -m {{ email|quote }} --no-eff-email

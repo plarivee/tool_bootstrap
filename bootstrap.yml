@@ -9,6 +9,7 @@
   vars_prompt:
     - name: "new_hosts"
       prompt: "provide space separated list of hostnames"
+      private: no
 
   tasks:
     - name: "add hosts to inventory"
